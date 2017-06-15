@@ -32,6 +32,18 @@ class Todo extends Component {
 			return { tasks: updatedTasks }
 		})
 	}
+	_toggleComplete = id => {
+		this.setState(prevState => {
+			const updatedTasks = prevState.tasks.map(task => {
+				if (task.id === id) {
+					return { ...task, complete: !task.complete }
+				} else {
+					return task
+				}
+			})
+			return { tasks: updatedTasks }
+		})
+	}
 	render() {
 		return (
 			<div>
@@ -40,7 +52,14 @@ class Todo extends Component {
 					{' '}Add Task{' '}
 				</button>
 				<ul className="list-group">
-					{this.state.tasks.map(task => <TodoItem {...task} />)}
+					{this.state.tasks.map(task =>
+						<TodoItem
+							key={task.id}
+							{...task}
+							_removeTask={this._removeTask}
+							_toggleComplete={this._toggleComplete}
+						/>
+					)}
 				</ul>
 			</div>
 		)

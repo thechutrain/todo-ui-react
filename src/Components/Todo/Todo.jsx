@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import TodoItem from './TodoItem'
 
 class Todo extends Component {
 	constructor(props) {
@@ -6,15 +7,40 @@ class Todo extends Component {
 		this.state = {
 			tasks: [
 				{ id: 1, task: 'get my react shit done', complete: false },
-				{ id: 2, task: 'incorporate redux', complete: true }
-			]
+				{ id: 2, task: 'incorporate redux', complete: true },
+				{ id: 3, task: 'add bootstrap4 and make it nice', complete: false }
+			],
+			lastId: 3
 		}
+	}
+	_addTask = taskObj => {
+		// create the new task
+		let newId = this.state.lastId
+		const newTask = Object.assign({ task: '', complete: false }, taskObj, {
+			id: ++newId
+		})
+		// update the state
+		this.setState(prevState => {
+			const updatedTasks = prevState.tasks
+			updatedTasks.push(newTask)
+			return { tasks: updatedTasks, lastId: ++prevState.lastId }
+		})
+	}
+	_removeTask = id => {
+		this.setState(prevState => {
+			const updatedTasks = prevState.tasks.filter(task => task.id !== id)
+			return { tasks: updatedTasks }
+		})
 	}
 	render() {
 		return (
 			<div>
-				<ul>
-					{this.state.tasks.map(task => displayTask(task))}
+				<h2>Total Tasks: {this.state.tasks.length}</h2>
+				<button onClick={this._addTask} className="btn btn-default">
+					{' '}Add Task{' '}
+				</button>
+				<ul className="list-group">
+					{this.state.tasks.map(task => <TodoItem {...task} />)}
 				</ul>
 			</div>
 		)
@@ -22,11 +48,3 @@ class Todo extends Component {
 }
 
 export default Todo
-
-function displayTask(props) {
-	return (
-		<li key={props.id}>
-			<p>Task: {props.task}</p>
-		</li>
-	)
-}

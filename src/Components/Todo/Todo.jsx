@@ -6,55 +6,32 @@ class Todo extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			tasks: [
-				{ id: 1, task: 'get my react shit done', complete: false },
-				{ id: 2, task: 'incorporate redux', complete: true },
-				{ id: 3, task: 'add bootstrap4 and make it nice', complete: false }
-			],
-			lastId: 3
+			tasks: [],
+			lastId: 0
 		}
+		// this.state = {
+		// 	tasks: [
+		// 		{ id: 1, task: 'get my react shit done', complete: false },
+		// 		{ id: 2, task: 'incorporate redux', complete: true },
+		// 		{ id: 3, task: 'add bootstrap4 and make it nice', complete: false }
+		// 	],
+		// 	lastId: 3
+		// }
 	}
 	_addTask = taskObj => {
-		// create the new task
-		let newId = this.state.lastId
-		const newTask = Object.assign({ task: '', complete: false }, taskObj, {
-			id: ++newId
-		})
-		// update the state
 		this.setState(prevState => {
+			const newTask = { task: '', complete: false, id: ++prevState.lastId }
 			const updatedTasks = prevState.tasks
 			updatedTasks.push(newTask)
-			return { tasks: updatedTasks, lastId: ++prevState.lastId }
+			return { tasks: updatedTasks }
 		})
 	}
-	// ====== VERSION 1 =========
-	// _removeTask = id => {
-	// 	this.setState(prevState => {
-	// 		const updatedTasks = prevState.tasks.filter(task => task.id !== id)
-	// 		return { tasks: updatedTasks }
-	// 	})
-	// }
-	// ======== VERSION 2 ========
 	_removeTask = id => () => {
 		this.setState(prevState => {
 			const updatedTasks = prevState.tasks.filter(task => task.id !== id)
 			return { tasks: updatedTasks }
 		})
 	}
-	// ====== VERSION 1 =========
-	// _toggleComplete = id => {
-	// this.setState(prevState => {
-	// 	const updatedTasks = prevState.tasks.map(task => {
-	// 		if (task.id === id) {
-	// 			return { ...task, complete: !task.complete }
-	// 		} else {
-	// 			return task
-	// 		}
-	// 	})
-	// 	return { tasks: updatedTasks }
-	// })
-	// }
-	// ====== VERSION 2 =========
 	_toggleComplete = id => () => {
 		this.setState(prevState => {
 			const updatedTasks = prevState.tasks.map(

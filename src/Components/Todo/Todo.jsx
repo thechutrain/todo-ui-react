@@ -6,7 +6,7 @@ class Todo extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			tasks: [],
+			tasks: [{ id: 0, text: 'Build yet another todo app', complete: false }],
 			lastId: 0
 		}
 	}
@@ -44,7 +44,7 @@ class Todo extends Component {
 		return (
 			<div>
 				<h2>Total Tasks: {this.state.tasks.length}</h2>
-				<button onClick={this._addTask} className="btn btn-default">
+				<button onClick={this._addTask} className="btn btn-info">
 					{' '}Add Task{' '}
 				</button>
 				<ul className="list-group">

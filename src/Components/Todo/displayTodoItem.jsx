@@ -15,7 +15,7 @@ function displayTodoItem(props) {
 				</span>
 				{/*  Input for Task name */}
 				<input
-					value={props.task}
+					value={props.text}
 					onChange={e => {
 						props._updateTask(e.target.value)
 					}}

@@ -27,22 +27,39 @@ class Todo extends Component {
 			return { tasks: updatedTasks, lastId: ++prevState.lastId }
 		})
 	}
-	// VERSION 1
-	_removeTask = id => {
+	// ====== VERSION 1 =========
+	// _removeTask = id => {
+	// 	this.setState(prevState => {
+	// 		const updatedTasks = prevState.tasks.filter(task => task.id !== id)
+	// 		return { tasks: updatedTasks }
+	// 	})
+	// }
+	// ======== VERSION 2 ========
+	_removeTask = id => () => {
 		this.setState(prevState => {
 			const updatedTasks = prevState.tasks.filter(task => task.id !== id)
 			return { tasks: updatedTasks }
 		})
 	}
-	_toggleComplete = id => {
+	// ====== VERSION 1 =========
+	// _toggleComplete = id => {
+	// this.setState(prevState => {
+	// 	const updatedTasks = prevState.tasks.map(task => {
+	// 		if (task.id === id) {
+	// 			return { ...task, complete: !task.complete }
+	// 		} else {
+	// 			return task
+	// 		}
+	// 	})
+	// 	return { tasks: updatedTasks }
+	// })
+	// }
+	// ====== VERSION 2 =========
+	_toggleComplete = id => () => {
 		this.setState(prevState => {
-			const updatedTasks = prevState.tasks.map(task => {
-				if (task.id === id) {
-					return { ...task, complete: !task.complete }
-				} else {
-					return task
-				}
-			})
+			const updatedTasks = prevState.tasks.map(
+				task => (task.id === id ? { ...task, complete: !task.complete } : task)
+			)
 			return { tasks: updatedTasks }
 		})
 	}
@@ -54,21 +71,14 @@ class Todo extends Component {
 					{' '}Add Task{' '}
 				</button>
 				<ul className="list-group">
-					{this.state.tasks.map(task =>
-						// <TodoItem
-						// 	key={task.id}
-						// 	{...task}
-						// 	_removeTask={this._removeTask}
-						// 	_toggleComplete={this._toggleComplete}
-						// />
-						{
-							let props = Object.assign({}, task, {
-								_removeTask: this._removeTask
-							})
-							console.log(props)
-							return displayTodoItem(props)
-						}
-					)}
+					{this.state.tasks.map(task => {
+						let props = Object.assign({}, task, {
+							_removeTask: this._removeTask(task.id),
+							_toggleComplete: this._toggleComplete(task.id)
+						})
+						// console.log(props) // interesting that props is a lot more crap
+						return displayTodoItem(props)
+					})}
 				</ul>
 			</div>
 		)

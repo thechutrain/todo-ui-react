@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import TodoItem from './TodoItem'
+// import TodoItem from './TodoItem'
+import displayTodoItem from './displayTodoItem'
 
 class Todo extends Component {
 	constructor(props) {
@@ -26,6 +27,7 @@ class Todo extends Component {
 			return { tasks: updatedTasks, lastId: ++prevState.lastId }
 		})
 	}
+	// VERSION 1
 	_removeTask = id => {
 		this.setState(prevState => {
 			const updatedTasks = prevState.tasks.filter(task => task.id !== id)
@@ -53,12 +55,19 @@ class Todo extends Component {
 				</button>
 				<ul className="list-group">
 					{this.state.tasks.map(task =>
-						<TodoItem
-							key={task.id}
-							{...task}
-							_removeTask={this._removeTask}
-							_toggleComplete={this._toggleComplete}
-						/>
+						// <TodoItem
+						// 	key={task.id}
+						// 	{...task}
+						// 	_removeTask={this._removeTask}
+						// 	_toggleComplete={this._toggleComplete}
+						// />
+						{
+							let props = Object.assign({}, task, {
+								_removeTask: this._removeTask
+							})
+							console.log(props)
+							return displayTodoItem(props)
+						}
 					)}
 				</ul>
 			</div>
